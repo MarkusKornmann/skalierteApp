@@ -1,21 +1,22 @@
-# skalierteApp
+## skalierteApp
 
+Alias setzen:
 sudo bash -c "echo -e \"alias dc='docker compose'\nalias dcu='docker compose up'\nalias dcd='docker compose down'\nalias ndc='sudo nano compose.yml'\" >> ~/.bashrc"
 source ~/.bashrc
 
 dc build
 dcu -d --scale app=3
 
-http://localhost:4000
-
-Willkommen zur skalierten App auf Port 4000!
-
-$dc ps
+dc ps
 NAME                 IMAGE          COMMAND                  SERVICE   CREATED          STATUS          PORTS
 skaliert-app-1       skaliert-app   "docker-entrypoint.s…"   app       19 seconds ago   Up 19 seconds   4000/tcp, 8081/tcp
 skaliert-app-2       skaliert-app   "docker-entrypoint.s…"   app       19 seconds ago   Up 19 seconds   4000/tcp, 8081/tcp
 skaliert-app-3       skaliert-app   "docker-entrypoint.s…"   app       19 seconds ago   Up 19 seconds   4000/tcp, 8081/tcp
 skaliert-traefik-1   traefik:v3.0   "/entrypoint.sh --ap…"   traefik   19 seconds ago   Up 19 seconds   80/tcp, 0.0.0.0:4000->4000/tcp, [::]:4000->4000/tcp, 0.0.0.0:4080->8080/tcp, [::]:4080->8080/tcp
+
+http://localhost:4000
+
+Willkommen zur skalierten App auf Port 4000!
 
 #Load Balancing in Traefik testen
 Um zu überprüfen, ob Traefik wirklich die Anfragen auf alle App-Instanzen verteilt, gibt es mehrere Möglichkeiten:
