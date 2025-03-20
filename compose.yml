@@ -1,3 +1,4 @@
+## Masko ## 
 services:
   app:
     build:
@@ -5,20 +6,28 @@ services:
       dockerfile: Dockerfile
     labels:
       - "traefik.http.routers.app.rule=PathPrefix(`/`)"
-      - "traefik.http.services.app.loadbalancer.server.port=8081"
+      - "traefik.http.services.app.loadbalancer.server.port=4000"
     deploy:
       replicas: 3
-    ports:
-      - "8082:8081"
+    expose:
+      - "4000"  # musste den Port ändern
+    networks:
+      - web
 
   traefik:
     image: traefik:v3.0
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
-      - "--entrypoints.web.address=:8080"
+      - "--entrypoints.web.address=:4000"
     ports:
-      - "8080:8080"
-      - "8082:8081"
+      - "4000:4000"  # App = http://localhost:4000
+      - "4080:8080"  # Traefik-Dashboard = http://localhost:4080
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - web
+
+networks:
+  web:
+    driver: bridge
